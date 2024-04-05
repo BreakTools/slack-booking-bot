@@ -1,0 +1,34 @@
+{
+	"type": "modal",
+	"callback_id": "no_bookings",
+	"title": {
+		"type": "plain_text",
+		"text": "Grading booker",
+		"emoji": true
+	},
+	"submit": {
+		"type": "plain_text",
+		"text": "Okay...",
+		"emoji": true
+	},
+	"close": {
+		"type": "plain_text",
+		"text": "Cancel",
+		"emoji": true
+	},
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "plain_text",
+				"text": "You don't have any bookings to remove...",
+				"emoji": true
+			}
+		},
+		{
+			"type": "image",
+			"image_url": "https://assets3.thrillist.com/v1/image/2624434/792x456/scale;webp=auto;jpeg_quality=60;progressive.jpg",
+			"alt_text": "delicious tacos"
+		}
+	]
+}

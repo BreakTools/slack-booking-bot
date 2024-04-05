@@ -1,0 +1,40 @@
+{
+  "type": "modal",
+  "callback_id": "viewing_unbooking",
+  "title": {
+    "type": "plain_text",
+    "text": "Viewing booker",
+    "emoji": true
+  },
+  "submit": {
+    "type": "plain_text",
+    "text": "Unbook",
+    "emoji": true
+  },
+  "close": {
+    "type": "plain_text",
+    "text": "Cancel",
+    "emoji": true
+  },
+  "blocks": [
+    {
+      "type": "input",
+      "block_id": "unbooking_select",
+      "element": {
+        "type": "static_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select an item",
+          "emoji": true
+        },
+        "options": [],
+        "action_id": "unbooking_action"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Please select the booking you want to remove.",
+        "emoji": true
+      }
+    }
+  ]
+}

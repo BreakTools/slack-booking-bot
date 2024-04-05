@@ -1,0 +1,21 @@
+{
+	"type": "modal",
+	"callback_id": "bookings_list",
+	"title": {
+		"type": "plain_text",
+		"text": "Grading booker",
+		"emoji": true
+	},
+	"submit": {
+		"type": "plain_text",
+		"text": "Thanks!",
+		"emoji": true
+	},
+	"close": {
+		"type": "plain_text",
+		"text": "Exit",
+		"emoji": true
+	},
+	"blocks": [
+	]
+}
