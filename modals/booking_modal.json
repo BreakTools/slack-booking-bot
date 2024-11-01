@@ -154,6 +154,14 @@
           {
             "text": {
               "type": "plain_text",
+              "text": "4:00hrs",
+              "emoji": true
+            },
+            "value": "240"
+          },
+          {
+            "text": {
+              "type": "plain_text",
               "text": "7:30hrs",
               "emoji": true
             },

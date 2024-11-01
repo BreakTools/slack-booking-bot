@@ -3,7 +3,7 @@
 	"callback_id": "bookings_list",
 	"title": {
 		"type": "plain_text",
-		"text": "Grading booker",
+		"text": "Viewing booker",
 		"emoji": true
 	},
 	"submit": {
@@ -16,6 +16,5 @@
 		"text": "Exit",
 		"emoji": true
 	},
-	"blocks": [
-	]
+	"blocks": []
 }

@@ -25,6 +25,9 @@ booking_modal_json = (SCRIPT_LOCATION / "modals" / "booking_modal.json").read_te
 unbooking_modal_json = (SCRIPT_LOCATION / "modals" / "unbooking_modal.json").read_text()
 UNBOOKING_MODAL = json.loads(unbooking_modal_json)
 
+extending_modal_json = (SCRIPT_LOCATION / "modals" / "extending_modal.json").read_text()
+EXTENDING_MODAL = json.loads(extending_modal_json)
+
 no_bookings_modal_json = (
     SCRIPT_LOCATION / "modals" / "no_bookings_modal.json"
 ).read_text()
@@ -65,6 +68,9 @@ async def viewing_command(ack, command, client, context) -> None:
     elif user_input.startswith("unbook"):
         await send_unbook_interface(client, command, context["user_id"])
 
+    elif user_input.startswith("extend"):
+        await send_extend_interface(client, command, context["user_id"])
+
 
 @app.view("viewing_booking")
 async def process_booking(ack, body, client, view) -> None:
@@ -100,7 +106,7 @@ async def process_booking(ack, body, client, view) -> None:
 
 @app.view("viewing_unbooking")
 async def process_unbooking(ack, body, client, view) -> None:
-    """This function processes a user unbooking from the booking modal.
+    """This function processes a user unbooking from the unbooking modal.
 
     Args:
         ack: Slack acknowledge
@@ -123,6 +129,72 @@ async def process_unbooking(ack, body, client, view) -> None:
     await client.chat_postMessage(
         channel=body["user"]["id"],
         text="Successfully removed booking.",
+    )
+
+
+@app.view("viewing_extending")
+async def process_extending(ack, body, client, view) -> None:
+    """This function processes a user extend from the extending modal.
+
+    Args:
+        ack: Slack acknowledge
+        body: Slack body
+        client: Slack client
+        view: Slack view
+    """
+    extending_id = int(
+        view["state"]["values"]["extending_select"]["extending_action"][
+            "selected_option"
+        ]["value"]
+    )
+    extension_in_seconds = (
+        int(
+            view["state"]["values"]["extending_duration"]["extending_duration"][
+                "selected_option"
+            ]["value"]
+        )
+        * 60
+    )
+
+    cursor = DATABASE_CONNECTION.cursor()
+    cursor.execute("SELECT * FROM bookings WHERE id = ?", (extending_id,))
+    booking = cursor.fetchone()
+
+    if booking is None:
+        await ack(
+            response_action="errors", errors={"extending_select": "Booking not found."}
+        )
+        return
+
+    new_end_time = booking[2] + extension_in_seconds
+    cursor.execute(
+        """
+        SELECT * FROM bookings
+        WHERE id != ? AND NOT (start_time >= ? OR end_time <= ?)
+        """,
+        (extending_id, new_end_time, booking[1]),
+    )
+    overlapping_booking = cursor.fetchone()
+
+    if overlapping_booking:
+        await ack(
+            response_action="errors",
+            errors={
+                "extending_select": "Cannot extend booking as it overlaps with another booking."
+            },
+        )
+        return
+
+    cursor.execute(
+        "UPDATE bookings SET end_time = ? WHERE id = ?", (new_end_time, extending_id)
+    )
+    DATABASE_CONNECTION.commit()
+
+    await ack()
+
+    await client.chat_postMessage(
+        channel=body["user"]["id"],
+        text="Successfully extended booking.",
     )
 
 
@@ -166,6 +238,32 @@ async def send_unbook_interface(client, command, user_id: str) -> None:
 
         await client.views_open(
             trigger_id=command["trigger_id"], view=new_unbooking_modal
+        )
+        return
+
+    await client.views_open(
+        trigger_id=command["trigger_id"], view=no_bookings_modal_json
+    )
+
+
+async def send_extend_interface(client, command, user_id: str) -> None:
+    """Sends the extending modal with correct booking information to the user.
+
+    Args:
+        client: Slack client
+        command: Slack command
+        user_id: ID of the user
+    """
+    user_bookings = await get_all_future_user_bookings(user_id)
+
+    if user_bookings:
+        input_options = await bookings_to_slack_options(user_bookings)
+
+        new_extending_modal = EXTENDING_MODAL
+        new_extending_modal["blocks"][0]["element"]["options"] = input_options
+
+        await client.views_open(
+            trigger_id=command["trigger_id"], view=new_extending_modal
         )
         return
 
@@ -384,7 +482,6 @@ async def bookings_to_slack_list(bookings: list) -> list:
         )
 
         if date_string != last_date:
-
             if last_date is not None:
                 blocks.append({"type": "divider"})
 

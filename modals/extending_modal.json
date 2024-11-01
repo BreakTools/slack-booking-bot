@@ -1,0 +1,111 @@
+{
+  "type": "modal",
+  "callback_id": "viewing_extending",
+  "title": {
+    "type": "plain_text",
+    "text": "Viewing booker",
+    "emoji": true
+  },
+  "submit": {
+    "type": "plain_text",
+    "text": "Extend",
+    "emoji": true
+  },
+  "close": {
+    "type": "plain_text",
+    "text": "Cancel",
+    "emoji": true
+  },
+  "blocks": [
+    {
+      "type": "input",
+      "block_id": "extending_select",
+      "element": {
+        "type": "static_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select an item",
+          "emoji": true
+        },
+        "options": [],
+        "action_id": "extending_action"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Please select the booking you want to extend.",
+        "emoji": true
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "input",
+      "block_id": "extending_duration",
+      "element": {
+        "type": "static_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select an item",
+          "emoji": true
+        },
+        "options": [
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "0:15hrs",
+              "emoji": true
+            },
+            "value": "15"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "0:30hrs",
+              "emoji": true
+            },
+            "value": "30"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "0:45hrs",
+              "emoji": true
+            },
+            "value": "45"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "1:00hrs",
+              "emoji": true
+            },
+            "value": "60"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "1:15hrs",
+              "emoji": true
+            },
+            "value": "75"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "1:30hrs",
+              "emoji": true
+            },
+            "value": "90"
+          }
+        ],
+        "action_id": "extending_duration"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Select your extending duration",
+        "emoji": true
+      }
+    }
+  ]
+}

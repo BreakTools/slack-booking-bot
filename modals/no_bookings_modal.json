@@ -3,7 +3,7 @@
 	"callback_id": "no_bookings",
 	"title": {
 		"type": "plain_text",
-		"text": "Grading booker",
+		"text": "Viewing booker",
 		"emoji": true
 	},
 	"submit": {
@@ -21,14 +21,14 @@
 			"type": "section",
 			"text": {
 				"type": "plain_text",
-				"text": "You don't have any bookings to remove...",
+				"text": "You don't have any bookings to edit...",
 				"emoji": true
 			}
 		},
 		{
 			"type": "image",
 			"image_url": "https://assets3.thrillist.com/v1/image/2624434/792x456/scale;webp=auto;jpeg_quality=60;progressive.jpg",
-			"alt_text": "delicious tacos"
+			"alt_text": "Funny looking cat"
 		}
 	]
 }
