@@ -504,7 +504,7 @@ async def bookings_to_slack_list(bookings: list) -> list:
                 "text": {
                     "type": "plain_text",
                     "text": f"{start_time_string}-{end_time_string}: {description}",
-                    "emoji": True,
+                    "emoji": False,
                 },
             }
         )
@@ -588,8 +588,8 @@ async def get_readable_start_end_time(
         .replace(tzinfo=pytz.utc)
         .astimezone(amsterdam)
     )
-    start_time_string = start_time_datetime.strftime("%H:%M")
-    end_time_string = end_time_datetime.strftime("%H:%M")
+    start_time_string = start_time_datetime.strftime("%H.%M")
+    end_time_string = end_time_datetime.strftime("%H.%M")
     return start_time_string, end_time_string
 
 
